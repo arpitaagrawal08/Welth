@@ -33,7 +33,7 @@ const HeroSection = () => {
           Manage Your Finances <br /> Your Way
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          An AI-powered Personal and Shared Finance platform that make every every penny count.
+          An AI-powered Personal and Shared Finance platform that makes every penny count.
         </p>
         <div className="flex justify-center space-x-4">
           <Link href="/dashboard">
