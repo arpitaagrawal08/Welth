@@ -1,9 +1,7 @@
 import React from 'react'
 
-const DashboardOverview = () => {
+export function DashboardOverview() {
   return (
     <div>transaction-overview</div>
   )
 }
-
-export default DashboardOverview

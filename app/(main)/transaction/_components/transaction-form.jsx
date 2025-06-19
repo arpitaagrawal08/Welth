@@ -305,7 +305,7 @@ export function AddTransactionForm({
       )}
 
       {/* Actions */}
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4">
         <Button
           type="button"
           variant="outline"
