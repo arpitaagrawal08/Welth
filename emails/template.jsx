@@ -45,7 +45,6 @@ const PREVIEW_DATA = {
   },
 };
 
-
 export default function EmailTemplate({
   userName = "",
   type = "monthly-report",
