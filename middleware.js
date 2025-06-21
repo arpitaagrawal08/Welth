@@ -11,6 +11,10 @@ const isProtectedRoute=createRouteMatcher([
 ])
 const aj=arcjet({
   key: process.env.ARCJET_KEY,
+  client:(req)=>{
+    return req.headers.get("x-forwarded-for")||"anonymous";
+  },
+  log:console,
   rules:[
     shield({
       mode:'LIVE'
@@ -40,4 +44,4 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-};
+}; 
