@@ -1,7 +1,6 @@
 "use client";
 
-import React from 'react'
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -33,7 +32,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,7 +47,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { categoryColors } from "@/data/categories";
@@ -57,6 +54,7 @@ import { bulkDeleteTransactions } from "@/actions/account";
 import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
+import { currencySymbols } from "@/components/CurrencySelector";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -67,10 +65,8 @@ const RECURRING_INTERVALS = {
   YEARLY: "Yearly",
 };
 
-
-export function TransactionTable({transactions}){
-
-      const [selectedIds, setSelectedIds] = useState([]);
+export function TransactionTable({ transactions, currency = "USD" }) {
+  const [selectedIds, setSelectedIds] = useState([]);
   const [sortConfig, setSortConfig] = useState({
     field: "date",
     direction: "desc",
@@ -81,11 +77,9 @@ export function TransactionTable({transactions}){
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
 
-  // Memoized filtered and sorted transactions
   const filteredAndSortedTransactions = useMemo(() => {
     let result = [...transactions];
 
-    // Apply search filter
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       result = result.filter((transaction) =>
@@ -93,23 +87,18 @@ export function TransactionTable({transactions}){
       );
     }
 
-      // Apply type filter
     if (typeFilter) {
       result = result.filter((transaction) => transaction.type === typeFilter);
     }
 
-    // Apply recurring filter
     if (recurringFilter) {
-      result = result.filter((transaction) => {
-        if (recurringFilter === "recurring") return transaction.isRecurring;
-        return !transaction.isRecurring;
-      });
+      result = result.filter((transaction) =>
+        recurringFilter === "recurring" ? transaction.isRecurring : !transaction.isRecurring
+      );
     }
 
-      // Apply sorting
     result.sort((a, b) => {
       let comparison = 0;
-
       switch (sortConfig.field) {
         case "date":
           comparison = new Date(a.date) - new Date(b.date);
@@ -123,38 +112,29 @@ export function TransactionTable({transactions}){
         default:
           comparison = 0;
       }
-
       return sortConfig.direction === "asc" ? comparison : -comparison;
     });
 
     return result;
   }, [transactions, searchTerm, typeFilter, recurringFilter, sortConfig]);
 
-   // Pagination calculations
-  const totalPages = Math.ceil(
-    filteredAndSortedTransactions.length / ITEMS_PER_PAGE
-  );
+  const totalPages = Math.ceil(filteredAndSortedTransactions.length / ITEMS_PER_PAGE);
+
   const paginatedTransactions = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredAndSortedTransactions.slice(
-      startIndex,
-      startIndex + ITEMS_PER_PAGE
-    );
+    return filteredAndSortedTransactions.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [filteredAndSortedTransactions, currentPage]);
 
   const handleSort = (field) => {
     setSortConfig((current) => ({
       field,
-      direction:
-        current.field === field && current.direction === "asc" ? "desc" : "asc",
+      direction: current.field === field && current.direction === "asc" ? "desc" : "asc",
     }));
   };
 
-   const handleSelect = (id) => {
+  const handleSelect = (id) => {
     setSelectedIds((current) =>
-      current.includes(id)
-        ? current.filter((item) => item !== id)
-        : [...current, id]
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
     );
   };
 
@@ -183,7 +163,7 @@ export function TransactionTable({transactions}){
     deleteFn(selectedIds);
   };
 
-   useEffect(() => {
+  useEffect(() => {
     if (deleted && !deleteLoading) {
       toast.error("Transactions deleted successfully");
     }
@@ -194,20 +174,19 @@ export function TransactionTable({transactions}){
     setTypeFilter("");
     setRecurringFilter("");
     setCurrentPage(1);
+    setSelectedIds([]);
   };
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
-    setSelectedIds([]); // Clear selections on page change
+    setSelectedIds([]);
   };
-  
+
   return (
-    <div  className="space-y-4">
-         {deleteLoading && (
-        <BarLoader className="mt-4" width={"100%"} color="#9333ea" />
-      )}
-        {/* filters */}
-    <div className="flex flex-col sm:flex-row gap-4">
+    <div className="space-y-4">
+      {deleteLoading && <BarLoader className="mt-4" width={"100%"} color="#9333ea" />}
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -253,14 +232,9 @@ export function TransactionTable({transactions}){
             </SelectContent>
           </Select>
 
-          {/* Bulk Actions */}
           {selectedIds.length > 0 && (
             <div className="flex items-center gap-2">
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleBulkDelete}
-              >
+              <Button variant="destructive" size="sm" onClick={handleBulkDelete}>
                 <Trash className="h-4 w-4 mr-2" />
                 Delete Selected ({selectedIds.length})
               </Button>
@@ -268,19 +242,14 @@ export function TransactionTable({transactions}){
           )}
 
           {(searchTerm || typeFilter || recurringFilter) && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleClearFilters}
-              title="Clear filters"
-            >
+            <Button variant="outline" size="icon" onClick={handleClearFilters} title="Clear filters">
               <X className="h-4 w-5" />
             </Button>
           )}
         </div>
       </div>
-        
-         {/* Transactions Table */}
+
+      {/* Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -294,10 +263,7 @@ export function TransactionTable({transactions}){
                   onCheckedChange={handleSelectAll}
                 />
               </TableHead>
-              <TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort("date")}
-              >
+              <TableHead className="cursor-pointer" onClick={() => handleSort("date")}>
                 <div className="flex items-center">
                   Date
                   {sortConfig.field === "date" &&
@@ -309,10 +275,7 @@ export function TransactionTable({transactions}){
                 </div>
               </TableHead>
               <TableHead>Description</TableHead>
-              <TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort("category")}
-              >
+              <TableHead className="cursor-pointer" onClick={() => handleSort("category")}>
                 <div className="flex items-center">
                   Category
                   {sortConfig.field === "category" &&
@@ -323,10 +286,7 @@ export function TransactionTable({transactions}){
                     ))}
                 </div>
               </TableHead>
-              <TableHead
-                className="cursor-pointer text-right"
-                onClick={() => handleSort("amount")}
-              >
+              <TableHead className="cursor-pointer text-right" onClick={() => handleSort("amount")}>
                 <div className="flex items-center justify-end">
                   Amount
                   {sortConfig.field === "amount" &&
@@ -344,10 +304,7 @@ export function TransactionTable({transactions}){
           <TableBody>
             {paginatedTransactions.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="text-center text-muted-foreground"
-                >
+                <TableCell colSpan={7} className="text-center text-muted-foreground">
                   No transactions found
                 </TableCell>
               </TableRow>
@@ -360,15 +317,11 @@ export function TransactionTable({transactions}){
                       onCheckedChange={() => handleSelect(transaction.id)}
                     />
                   </TableCell>
-                  <TableCell>
-                    {format(new Date(transaction.date), "PP")}
-                  </TableCell>
+                  <TableCell>{format(new Date(transaction.date), "PP")}</TableCell>
                   <TableCell>{transaction.description}</TableCell>
                   <TableCell className="capitalize">
                     <span
-                      style={{
-                        background: categoryColors[transaction.category],
-                      }}
+                      style={{ background: categoryColors[transaction.category] }}
                       className="px-2 py-1 rounded text-white text-sm"
                     >
                       {transaction.category}
@@ -382,7 +335,8 @@ export function TransactionTable({transactions}){
                         : "text-emerald-500 font-semibold"
                     )}
                   >
-                    {transaction.type === "EXPENSE" ? "-" : "+"}$
+                    {transaction.type === "EXPENSE" ? "-" : "+"}
+                    {currencySymbols[currency] || "$"}
                     {transaction.amount.toFixed(2)}
                   </TableCell>
                   <TableCell>
@@ -395,21 +349,14 @@ export function TransactionTable({transactions}){
                               className="gap-1 bg-purple-100 text-purple-700 hover:bg-purple-200"
                             >
                               <RefreshCw className="h-3 w-3" />
-                              {
-                                RECURRING_INTERVALS[
-                                  transaction.recurringInterval
-                                ]
-                              }
+                              {RECURRING_INTERVALS[transaction.recurringInterval]}
                             </Badge>
                           </TooltipTrigger>
                           <TooltipContent>
                             <div className="text-sm">
                               <div className="font-medium">Next Date:</div>
                               <div>
-                                {format(
-                                  new Date(transaction.nextRecurringDate),
-                                  "PPP"
-                                )}
+                                {format(new Date(transaction.nextRecurringDate), "PPP")}
                               </div>
                             </div>
                           </TooltipContent>
@@ -432,9 +379,7 @@ export function TransactionTable({transactions}){
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
                           onClick={() =>
-                            router.push(
-                              `/transaction/create?edit=${transaction.id}`
-                            )
+                            router.push(`/transaction/create?edit=${transaction.id}`)
                           }
                         >
                           Edit
@@ -454,9 +399,9 @@ export function TransactionTable({transactions}){
             )}
           </TableBody>
         </Table>
-        </div>
+      </div>
 
- {/* Pagination */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
           <Button
@@ -481,5 +426,5 @@ export function TransactionTable({transactions}){
         </div>
       )}
     </div>
-  )
+  );
 }

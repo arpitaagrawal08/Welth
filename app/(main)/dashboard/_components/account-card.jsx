@@ -1,10 +1,11 @@
 "use client";
 
-import { ArrowUpRight, ArrowDownRight, CreditCard } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
+import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { useEffect } from "react";
-import useFetch from "@/hooks/use-fetch";
+import Link from "next/link";
+import { toast } from "sonner";
+
+import { Switch } from "@/components/ui/switch";
 import {
   Card,
   CardContent,
@@ -12,12 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
 import { updateDefaultAccount } from "@/actions/account";
-import { toast } from "sonner";
+import { currencySymbols } from "@/components/CurrencySelector";
+import useFetch from "@/hooks/use-fetch";
 
 export function AccountCard({ account }) {
-  const { name, type, balance, id, isDefault } = account;
+  const { name, type, balance, id, isDefault, currency } = account;
 
   const {
     loading: updateDefaultLoading,
@@ -27,11 +28,11 @@ export function AccountCard({ account }) {
   } = useFetch(updateDefaultAccount);
 
   const handleDefaultChange = async (event) => {
-    event.preventDefault(); // Prevent navigation
+    event.preventDefault(); // Prevent card click navigation
 
     if (isDefault) {
-      toast.warning("You need atleast 1 default account");
-      return; // Don't allow toggling off the default account
+      toast.warning("You need at least 1 default account");
+      return;
     }
 
     await updateDefaultFn(id);
@@ -64,10 +65,11 @@ export function AccountCard({ account }) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            ${parseFloat(balance).toFixed(2)}
+            {currencySymbols[currency] || "$"}
+            {parseFloat(balance).toFixed(2)}
           </div>
           <p className="text-xs text-muted-foreground">
-            {type.charAt(0) + type.slice(1).toLowerCase()} Account
+            {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()} Account
           </p>
         </CardContent>
         <CardFooter className="flex justify-between text-sm text-muted-foreground">

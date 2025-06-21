@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Pencil, Check, X } from "lucide-react";
 import useFetch from "@/hooks/use-fetch";
 import { toast } from "sonner";
+import { currencySymbols } from "@/components/CurrencySelector";
 
 import {
   Card,
@@ -17,7 +18,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateBudget } from "@/actions/budget";
 
-export function BudgetProgress({ initialBudget, currentExpenses }) {
+export function BudgetProgress({
+  initialBudget,
+  currentExpenses,
+  currency = "USD",
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [newBudget, setNewBudget] = useState(
     initialBudget?.amount?.toString() || ""
@@ -102,11 +107,16 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
             ) : (
               <>
                 <CardDescription>
-                  {initialBudget
-                    ? `$${currentExpenses.toFixed(
-                        2
-                      )} of $${initialBudget.amount.toFixed(2)} spent`
-                    : "No budget set"}
+                  {initialBudget ? (
+                    <>
+                      {currencySymbols[currency] || "$"}
+                      {currentExpenses.toFixed(2)} of{" "}
+                      {currencySymbols[currency] || "$"}
+                      {initialBudget.amount.toFixed(2)} spent
+                    </>
+                  ) : (
+                    "No budget set"
+                  )}
                 </CardDescription>
                 <Button
                   variant="ghost"
@@ -127,12 +137,11 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
             <Progress
               value={percentUsed}
               extraStyles={`${
-                // add to Progress component
                 percentUsed >= 90
                   ? "bg-red-500"
                   : percentUsed >= 75
-                    ? "bg-yellow-500"
-                    : "bg-green-500"
+                  ? "bg-yellow-500"
+                  : "bg-green-500"
               }`}
             />
             <p className="text-xs text-muted-foreground text-right">
