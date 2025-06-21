@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 💰 Welth – Personal & Shared Finance Platform
 
-## Getting Started
+**Welth** is a modern full-stack web app to manage both **personal** and **shared finances** with ease. Track your income, expenses, and group spending in one beautifully organized platform. Think of it as your personal expense tracker + Splitwise, but smarter.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+### ✅ Personal Finance
+- Add & manage personal income and expense transactions
+- AI-powered receipt scanner to auto-fill transactions
+- Clean dashboard with:
+  - Pie chart for category-wise spending
+  - Bar chart for income & expenses over time
+  - Percentage slider showing income utilization
+- Monthly summary email with insights
+
+### 🤝 Shared Finance (In Progress)
+- Create or join shared groups
+- Track who paid what and who owes whom
+- Split transactions and see real-time balances
+- Separate dashboard for group expenses
+
+### 🔒 Security & Performance
+- Clerk for authentication
+- Arcjet for bot protection & rate limiting
+- Inngest for background tasks like scheduled email reports
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** Next.js 14, Tailwind CSS
+- **Forms & Validation:** React Hook Form, Zod
+- **Database:** PostgreSQL via Prisma ORM
+- **Authentication:** Clerk
+- **Scheduled Jobs:** Inngest
+- **Security:** Arcjet
+- **Deployment:** Vercel
+
+---
+
+## ⚙️ Setup Instructions
 
 ```bash
+# 1. Clone the repo
+git clone https://github.com/arpitaagrawal08/Welth.git
+cd Welth
+
+# 2. Install dependencies
+npm install
+# or
+yarn install
+# or
+pnpm install
+
+# 3. Create .env file
+cp .env.example .env
+# Then add your environment variables in the .env file
+
+# 4. Push database schema
+npx prisma db push
+
+# 5. Run the dev server
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🌱 Upcoming Features
+-> Shared finance group settlement
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+-> Real-time notifications
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+-> AI-based monthly saving suggestions
 
-## Learn More
+-> PDF export of financial reports
 
-To learn more about Next.js, take a look at the following resources:
+-> Group reminders for pending balances
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 👩‍💻 Made By
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Arpita Agrawal**  
+💼 [GitHub](https://github.com/arpitaagrawal08)  
+🚀 Built with Next.js, a strong cup of coffee, and a passion for clean design.
