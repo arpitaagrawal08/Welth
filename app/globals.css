@@ -162,3 +162,8 @@
   background-size: 200% 200%;
   animation: gradientMove 3s ease infinite;
 }
+/* styles/globals.css */
+html.dark {
+  color: #e5e7eb; /* Tailwind gray-200 */
+  background-color: #111827; /* Tailwind gray-900 */
+}
