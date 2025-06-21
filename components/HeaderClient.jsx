@@ -41,23 +41,34 @@ const HeaderClient = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <SignedIn>
-            <Link
-              href="/dashboard"
-              className="text-gray-600 hover:text-blue-600 flex items-center gap-2"
-            >
-              <Button variant="outline">
-                <LayoutDashboard size={18} />
-                <span className="hidden md:inline">Dashboard</span>
-              </Button>
-            </Link>
-            <a href="/transaction/create">
-              <Button className="flex items-center gap-2">
-                <PenBox size={18} />
-                <span className="hidden md:inline">Add Transaction</span>
-              </Button>
-            </a>
-          </SignedIn>
+        
+
+<SignedIn>
+  <div className="flex items-center space-x-2">
+    {/* 🌙 Theme Toggle - first */}
+    <ThemeToggle />
+
+    {/* Dashboard Button */}
+    <Link
+      href="/dashboard"
+      className="text-gray-600 hover:text-blue-600 flex items-center gap-2"
+    >
+      <Button variant="outline">
+        <LayoutDashboard size={18} />
+        <span className="hidden md:inline">Dashboard</span>
+      </Button>
+    </Link>
+
+    {/* Add Transaction Button */}
+    <a href="/transaction/create">
+      <Button className="flex items-center gap-2">
+        <PenBox size={18} />
+        <span className="hidden md:inline">Add Transaction</span>
+      </Button>
+    </a>
+  </div>
+</SignedIn>
+
 
           <SignedOut>
             <div className="flex items-center space-x-2">

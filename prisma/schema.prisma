@@ -35,6 +35,7 @@ model Account {
   name         String
   type         AccountType
   balance      Decimal       @default(0) // will ask inital balance while creating an account
+  currency     Currency      @default(USD)
   isDefault    Boolean       @default(false)
   userId       String
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -84,7 +85,12 @@ model Budget {
   @@index([userId])
   @@map("budgets")
 }
-
+enum Currency {
+  USD
+  INR
+  EUR
+  GBP
+}
 
 enum TransactionType {
   INCOME

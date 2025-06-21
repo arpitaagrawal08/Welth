@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils";
 import { createTransaction, updateTransaction } from "@/actions/transaction";
 import { transactionSchema } from "@/app/lib/schema";
 import { ReceiptScanner } from "./receipt-scanner";
+import { currencySymbols } from "@/components/CurrencySelector"; // ✅
 
 export function AddTransactionForm({
   accounts,
@@ -123,6 +124,10 @@ export function AddTransactionForm({
   const type = watch("type");
   const isRecurring = watch("isRecurring");
   const date = watch("date");
+  const selectedAccountId = watch("accountId");
+  const selectedAccount = accounts.find((ac) => ac.id === selectedAccountId);
+  const selectedCurrency = selectedAccount?.currency || "USD";
+  const currencySymbol = currencySymbols[selectedCurrency] || "$";
 
   const filteredCategories = categories.filter(
     (category) => category.type === type
@@ -130,7 +135,6 @@ export function AddTransactionForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Receipt Scanner - Only show in create mode */}
       {!editMode && <ReceiptScanner onScanComplete={handleScanComplete} />}
 
       {/* Type */}
@@ -155,19 +159,29 @@ export function AddTransactionForm({
 
       {/* Amount and Account */}
       <div className="grid gap-6 md:grid-cols-2">
+        {/* Amount */}
         <div className="space-y-2">
-          <label className="text-sm font-medium">Amount</label>
-          <Input
-            type="number"
-            step="0.01"
-            placeholder="0.00"
-            {...register("amount")}
-          />
+          <label className="text-sm font-medium">
+            Amount ({currencySymbol})
+          </label>
+          <div className="relative">
+            <span className="absolute left-3 top-2.5 text-muted-foreground">
+              {currencySymbol}
+            </span>
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              className="pl-7"
+              {...register("amount")}
+            />
+          </div>
           {errors.amount && (
             <p className="text-sm text-red-500">{errors.amount.message}</p>
           )}
         </div>
 
+        {/* Account */}
         <div className="space-y-2">
           <label className="text-sm font-medium">Account</label>
           <Select
@@ -180,7 +194,9 @@ export function AddTransactionForm({
             <SelectContent>
               {accounts.map((account) => (
                 <SelectItem key={account.id} value={account.id}>
-                  {account.name} (${parseFloat(account.balance).toFixed(2)})
+                  {account.name} (
+                  {currencySymbols[account.currency] || "$"}{" "}
+                  {parseFloat(account.balance).toFixed(2)})
                 </SelectItem>
               ))}
               <CreateAccountDrawer>
@@ -264,7 +280,7 @@ export function AddTransactionForm({
         )}
       </div>
 
-      {/* Recurring Toggle */}
+      {/* Recurring */}
       <div className="flex flex-row items-center justify-between rounded-lg border p-4">
         <div className="space-y-0.5">
           <label className="text-base font-medium">Recurring Transaction</label>
@@ -278,7 +294,6 @@ export function AddTransactionForm({
         />
       </div>
 
-      {/* Recurring Interval */}
       {isRecurring && (
         <div className="space-y-2">
           <label className="text-sm font-medium">Recurring Interval</label>

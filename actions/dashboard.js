@@ -153,4 +153,4 @@ export async function getDashboardData() {
   });
 
   return transactions.map(serializeTransaction);
-}
+} 

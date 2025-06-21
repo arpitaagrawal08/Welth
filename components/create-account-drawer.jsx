@@ -1,4 +1,5 @@
 "use client";
+import { Currency } from "@prisma/client"; // 👈 Add this
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -30,6 +31,7 @@ import { accountSchema } from "@/app/lib/schema";
 
 export function CreateAccountDrawer({ children }) {
   const [open, setOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -44,6 +46,7 @@ export function CreateAccountDrawer({ children }) {
       type: "CURRENT",
       balance: "",
       isDefault: false,
+      currency: "USD", // ✅ default currency
     },
   });
 
@@ -55,7 +58,7 @@ export function CreateAccountDrawer({ children }) {
   } = useFetch(createAccount);
 
   const onSubmit = async (data) => {
-    await createAccountFn(data);
+    await createAccountFn(data); // ✅ currency is included here
   };
 
   useEffect(() => {
@@ -81,6 +84,7 @@ export function CreateAccountDrawer({ children }) {
         </DrawerHeader>
         <div className="px-4 pb-4">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Account Name */}
             <div className="space-y-2">
               <label
                 htmlFor="name"
@@ -98,30 +102,62 @@ export function CreateAccountDrawer({ children }) {
               )}
             </div>
 
-            <div className="space-y-2">
-              <label
-                htmlFor="type"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Account Type
-              </label>
-              <Select
-                onValueChange={(value) => setValue("type", value)}
-                defaultValue={watch("type")}
-              >
-                <SelectTrigger id="type">
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="CURRENT">Current</SelectItem>
-                  <SelectItem value="SAVINGS">Savings</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.type && (
-                <p className="text-sm text-red-500">{errors.type.message}</p>
-              )}
+            {/* Account Type + Currency - side by side */}
+            <div className="flex gap-4">
+              {/* Account Type */}
+              <div className="flex-1 space-y-2">
+                <label
+                  htmlFor="type"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Account Type
+                </label>
+                <Select
+                  onValueChange={(value) => setValue("type", value)}
+                  defaultValue={watch("type")}
+                >
+                  <SelectTrigger id="type">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="CURRENT">Current</SelectItem>
+                    <SelectItem value="SAVINGS">Savings</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.type && (
+                  <p className="text-sm text-red-500">{errors.type.message}</p>
+                )}
+              </div>
+
+              {/* Currency Selector */}
+              <div className="flex-1 space-y-2">
+                <label
+                  htmlFor="currency"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Currency
+                </label>
+                <Select
+                  onValueChange={(value) => setValue("currency", value)}
+                  defaultValue={watch("currency")}
+                >
+                  <SelectTrigger id="currency">
+                    <SelectValue placeholder="Select currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USD">$ USD</SelectItem>
+                    <SelectItem value="INR">₹ INR</SelectItem>
+                    <SelectItem value="EUR">€ EUR</SelectItem>
+                    <SelectItem value="GBP">£ GBP</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.currency && (
+                  <p className="text-sm text-red-500">{errors.currency.message}</p>
+                )}
+              </div>
             </div>
 
+            {/* Initial Balance */}
             <div className="space-y-2">
               <label
                 htmlFor="balance"
@@ -141,6 +177,7 @@ export function CreateAccountDrawer({ children }) {
               )}
             </div>
 
+            {/* Default Toggle */}
             <div className="flex items-center justify-between rounded-lg border p-3">
               <div className="space-y-0.5">
                 <label
@@ -160,6 +197,7 @@ export function CreateAccountDrawer({ children }) {
               />
             </div>
 
+            {/* Buttons */}
             <div className="flex gap-4 pt-4">
               <DrawerClose asChild>
                 <Button type="button" variant="outline" className="flex-1">
