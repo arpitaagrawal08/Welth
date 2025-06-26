@@ -30,10 +30,10 @@ const HeroSection = () => {
     <section className="pt-40 pb-20 px-4">
       <div className="container mx-auto text-center">
         <h1 className="text-5xl md:text-8xl lg:text-[105px] pb-6 gradient-title">
-          Manage Your Finances <br /> Your Way
+          Manage Your Personal Finances <br /> Your Way
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          An AI-powered Personal and Shared Finance platform that makes every penny count.
+          An AI-powered Personal Finance platform that makes every penny count with smart insights and automated tracking.
         </p>
         <div className="flex justify-center space-x-4">
           <Link href="/dashboard">
@@ -41,7 +41,7 @@ const HeroSection = () => {
               Get Started
             </Button>
           </Link>
-          <Link href="ttps://www.youtube.com/roadsidecoder">
+          <Link href="https://www.youtube.com/roadsidecoder">
             <Button size="lg" variant="outline" className="px-8">
               Watch Demo
             </Button>
