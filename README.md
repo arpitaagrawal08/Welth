@@ -67,7 +67,7 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-
+```
 🌱 Upcoming Features
 -> Shared finance group settlement
 
