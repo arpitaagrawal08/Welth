@@ -1,0 +1,100 @@
+📘 Welth – Personal & Shared Expense 
+Management App 
+Live Site: https://welth-circle.vercel.app/ 
+ 
+🔰 Overview 
+Welth is a modern full-stack web application designed to help users track, manage, and split 
+expenses—both individually and within groups. With a clean and intuitive interface, Welth 
+simplifies personal budgeting and collaborative expense management for friends, roommates, 
+travel companions, or colleagues. 
+The app offers two primary modes:  ✅ Personal Mode – For individual budgeting and spending tracking  👥 Shared Mode (Welth Circle) – For managing group-based expenses collaboratively 
+ 
+✨ Core Features 
+🔐 Authentication & User Management 
+●  Secure sign-in via Clerk  
+●  Synced with the backend using Convex  
+●  Smooth login flow with persistent sessions  
+🔄 Global Currency Selector 
+●  Choose your preferred currency (INR, USD, EUR, GBP)  
+●  All expenses, balances, and settlements update dynamically  
+●  Perfect for international travel and cross-border transactions  
+🎯 Expense Tracking 
+Personal Mode 
+●  Add one-time or recurring income and expenses  
+●  Categorize transactions (e.g., groceries, rent, salary)  
+●  View monthly summaries and balance sheets  
+Shared Mode 
+●  Create or join a group (Welth Circle)  
+●  Add expenses and split them equally or unequally  
+●  Assign who paid and who owes  
+📊 Interactive Dashboard 
+●  Visual summary of personal or group finances  
+●  Track:  
+○  Total Spent  
+○  Current Balance  
+○  Pending Settlements  
+●  Visuals include pie charts, filters by category/date, and sortable lists  
+🔄 Settle Up 
+●  Record repayments between group members  
+●  Debts are automatically adjusted and recalculated  
+●  Transparent logs ensure accountability  
+🌗 Light/Dark Mode 
+●  Seamless theme switching using next-themes and TailwindCSS  
+●  Smooth transitions with a modern aesthetic  
+ 
+🔀 User Flow 
+🔻 From Landing Page to Dashboard 
+1.  Visit welth-circle.vercel.app 
+ 
+2.  Explore the landing page to understand the app  
+3.  Click Login and authenticate via email, Google, or GitHub  
+4.  Post-login, you're directed to a selector page  
+5.  Choose between Personal or Shared mode  
+ 
+👤 Personal Mode Flow 
+●  Access your personal finance dashboard  
+●  Add income and expense entries  
+●  Filter data by category or month  
+●  Theme and currency settings are applied automatically  
+●  Receive monthly email summaries  
+●  Upload receipts or scan them directly—no manual entry needed  
+ 
+👥 Shared Mode (Welth Circle) Flow 
+●  Navigate to your group dashboard  
+●  Create or join a group  
+●  Within a group, you can:  
+○  Add new expenses  
+○  Select payer(s) and involved members  
+○  Define custom split rules  
+○  View real-time balances showing who owes whom  
+○  Settle debts with just a few clicks  
+●  An integrated chatbot guides you throughout to ensure a seamless experience  
+ 
+🧰 Technology Stack 
+Layer  Technologies Used 
+Frontend  Next.js 14, React 18, TailwindCSS, ShadCN UI 
+Backend  Convex – serverless backend and real-time database 
+Auth  Clerk – user authentication and session management 
+UI  Framer Motion, Lucide Icons 
+Email  Inngest + React Email – for features like end-of-month expense 
+summaries 
+State  React Hooks, Convex queries & mutations 
+Hosting  Vercel – optimized deployment for frontend and serverless functions 
+ 
+🚀 Getting Started 
+Important-> always login first, to function smoothly wothout errors
+
+1.  Login using your email, Google, or GitHub account—or create a new one  
+2.  Click Get Started to choose your preferred mode  
+○  Personal Finance:  
+■  Add income and expenses  
+■  Access an interactive dashboard with financial insights  
+■  Upload or scan receipts for auto-entry  
+■  Receive monthly email reports  
+○  Shared Finance:  
+■  Create or join groups  
+■  Log and split group expenses  
+■  Use the built-in chatbot for guidance throughout the process  
+ if you face any errors using the app, or see any bugs that maybe corrrected, please let us know at: agrawalarpita8805@gmail.com
+ 
+ how to scan receipts? you can scan the receipts by clicking the scan receipt using AI button in the transaction form and then choose your receipt to be scanned and recorded!
